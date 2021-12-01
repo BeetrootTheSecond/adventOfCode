@@ -7,8 +7,6 @@ day=$1
 if [ -z "$1" ]
   then
     day=$( date +%d )
-  else
-  day=$1
 fi
 
 output_path="$(printf '%s/day_%02d/input.txt' ${year} "${day:?gimme a day}")"
