@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "getInput": "ts-node getInputFile.ts",
 
-    "Y2021-D1":"ts-node 2021/1/index.ts"
+    "Y2021-D1":"ts-node 2021/1/index.ts",
+    "Y2021-D2":"ts-node 2021/2/index.ts"
 
   },
   "author": "",
