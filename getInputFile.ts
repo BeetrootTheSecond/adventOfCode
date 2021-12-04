@@ -7,6 +7,17 @@ const fse = require("fs-extra");
 const year: string | undefined = process.env.YEAR;
 let day: string | undefined = process.env.DAY;
 
+const templateFile = `import fs from "fs";
+
+let fileTestLocation: string = "${year}/${day}/testData.txt";
+let fileLocation: string = "${year}/${day}/input.txt";
+
+//load Data
+let data: Array<string> = fs
+  .readFileSync(fileTestLocation)
+  .toString()
+  .split("\\n");`;
+
 if (day == undefined) {
   day = new Date(Date.now()).getDate().toString();
 }
@@ -32,11 +43,17 @@ const getFile = async function (): Promise<void> {
     });
 }; //();
 
+const createTemplateFiles = async function (): Promise<void> {
+  fse.outputFileSync(`./${year}/${day}/testData.txt`, "");
+  fse.outputFileSync(`./${year}/${day}/index.ts`, templateFile);
+};
+
 (async () => {
   if (fs.existsSync(outputPath)) {
     //file exists
     console.log("File already exists");
   } else {
     await getFile();
+    await createTemplateFiles();
   }
 })();
