@@ -9,11 +9,15 @@ let day: string | undefined = process.env.DAY;
 
 const templateFile = `import fs from "fs";
 
-let fileTestLocation: string = "${year}/${day}/testData.txt";
+let testData = true;
+
 let fileLocation: string = "${year}/${day}/input.txt";
+if (testData) {
+  fileLocation = "${year}/${day}/testData.txt";
+}
 
 //load Data
-let data: Array<string> = fs
+let data: string[] = fs
   .readFileSync(fileTestLocation)
   .toString()
   .split("\\n");`;
