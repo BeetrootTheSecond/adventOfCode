@@ -31,23 +31,19 @@ console.log(["Answer Star-One", countIncrease(data), data.length]);
 
 //create arrays of three-measurement windows
 //[[1,2,3].[2,3,4]...]
-let threeMeasurementWindows: Array<Array<number>>;
-
-threeMeasurementWindows = data
+let threeMeasurementWindows: Array<Array<number>> = data
   .map((data, index, source) => {
-    if (index < source.length - 2)
+    if (index < source.length - 2) {
       return [source[index], source[index + 1], source[index + 2]];
+    }
     return [];
   })
   .filter((row) => row.length > 0);
 
 console.log([threeMeasurementWindows]);
-let threeMeasurementWindowsSUM: Array<number>;
 
-threeMeasurementWindowsSUM = threeMeasurementWindows.map((window) =>
-  window.reduce((a, b) => {
-    return a + b;
-  }, 0)
+let threeMeasurementWindowsSUM: number[] = threeMeasurementWindows.map(
+  (window) => window.reduce((a, b) => a + b, 0)
 );
 
 console.log([threeMeasurementWindowsSUM]);
