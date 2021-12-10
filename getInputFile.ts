@@ -18,7 +18,7 @@ if (testData) {
 
 //load Data
 let data: string[] = fs
-  .readFileSync(fileTestLocation)
+  .readFileSync(fileLocation)
   .toString()
   .split("\\n");`;
 
