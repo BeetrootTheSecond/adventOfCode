@@ -11,7 +11,15 @@ if (testData) {
 //load Data
 let data: string[] = fs.readFileSync(fileLocation).toString().split("\n");
 
-console.log(data);
+//console.log(data);
+
+//Two Star
+export interface WinningResults {
+  cardID: number;
+  result: number;
+}
+
+let twoStarResults: WinningResults[] = [];
 
 //One Star
 const bingoNumbers: number[] = data[0]
@@ -62,6 +70,13 @@ bingoNumbers.map((CallNumber) => {
             console.log(["One Star", sumOfUnmarked * CallNumber]);
             StarOneFound = true;
           }
+          let winner = twoStarResults.findIndex(
+            (result) => result.cardID == cardID
+          );
+          if (winner == -1) {
+            let result = sumOfUnmarked * CallNumber;
+            twoStarResults.push({ cardID, result } as WinningResults);
+          }
         }
       }
     });
@@ -79,6 +94,13 @@ bingoNumbers.map((CallNumber) => {
           console.log(["One Star", sumOfUnmarked * CallNumber]);
           StarOneFound = true;
         }
+        let winner = twoStarResults.findIndex(
+          (result) => result.cardID == cardID
+        );
+        if (winner == -1) {
+          let result = sumOfUnmarked * CallNumber;
+          twoStarResults.push({ cardID, result } as WinningResults);
+        }
       }
     }
   });
@@ -90,3 +112,6 @@ function calculateUnmarkedSum(BingoCard: number[][]) {
     .reduce((partial_sum: number, a: number) => partial_sum + a, 0);
   return card;
 }
+
+console.log(["One Star", twoStarResults[0]]);
+console.log(["Two Star", twoStarResults[twoStarResults.length - 1]]);
