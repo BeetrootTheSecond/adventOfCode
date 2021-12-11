@@ -11,7 +11,8 @@
     "Y2021-D2":"ts-node 2021/2/index.ts",
     "Y2021-D3":"ts-node 2021/3/index.ts",
     "Y2021-D4":"ts-node 2021/4/index.ts",
-    "Y2021-D5":"ts-node 2021/5/index.ts"
+    "Y2021-D5":"ts-node 2021/5/index.ts",
+    "Y2021-D6":"ts-node 2021/6/index.ts"
 
   },
   "author": "",
