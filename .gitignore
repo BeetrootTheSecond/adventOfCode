@@ -120,3 +120,4 @@ dist
 #Advert of Code input file
 input.txt
 testData.txt
+*.txt
