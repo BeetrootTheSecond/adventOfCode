@@ -1,5 +1,5 @@
 import fs from "fs";
-import { isOptionalTypeNode } from "typescript";
+import { isConstructorDeclaration, isOptionalTypeNode } from "typescript";
 
 let testData = false;
 
@@ -41,10 +41,17 @@ export interface mismaked {
   "]": number;
   "}": number;
   ">": number;
+  corruptedIndex: number[];
 }
-let mismakedCount = { ")": 0, "]": 0, "}": 0, ">": 0 };
+let mismakedCount = {
+  ")": 0,
+  "]": 0,
+  "}": 0,
+  ">": 0,
+  corruptedIndex: new Array(),
+};
 
-data.map((row) => {
+data.map((row, index) => {
   let chunks: string[] = [];
   for (let symbol of row) {
     //console.log(["chunk", chunks]);
@@ -58,6 +65,7 @@ data.map((row) => {
           //Error mismatched
           //oneStarSum += 3;
           mismakedCount[symbol as keyof mismaked]++;
+          mismakedCount.corruptedIndex.push(index);
         } else {
           chunks.push(previousSymbol);
 
@@ -71,8 +79,8 @@ data.map((row) => {
           //matched
         } else if (closed(symbol)) {
           //Error mismatched
-          //oneStarSum += 57;
           mismakedCount[symbol as keyof mismaked]++;
+          mismakedCount.corruptedIndex.push(index);
         } else {
           chunks.push(previousSymbol);
 
@@ -85,8 +93,8 @@ data.map((row) => {
           //matched
         } else if (closed(symbol)) {
           //Error mismatched
-          //oneStarSum += 1197;
           mismakedCount[symbol as keyof mismaked]++;
+          mismakedCount.corruptedIndex.push(index);
         } else {
           chunks.push(previousSymbol);
 
@@ -99,8 +107,8 @@ data.map((row) => {
           //matched
         } else if (closed(symbol)) {
           //Error mismatched
-          //oneStarSum += 25137;
           mismakedCount[symbol as keyof mismaked]++;
+          mismakedCount.corruptedIndex.push(index);
         } else {
           chunks.push(previousSymbol);
 
@@ -124,3 +132,105 @@ oneStarSum += mismakedCount["}"] * 1197;
 oneStarSum += mismakedCount[">"] * 25137;
 
 console.log(["Star One", oneStarSum, mismakedCount]);
+
+let part2Data = data.filter(
+  (row, index) => !mismakedCount.corruptedIndex.find((C) => C == index)
+);
+
+console.log({ part2Data: part2Data.length, Data: data.length });
+
+let part2Chunks = part2Data.map((row, index) => {
+  let chunks: string[] = [];
+  for (let symbol of row) {
+    //console.log(["chunk", chunks]);
+    let previousSymbol = chunks.pop() || "";
+
+    switch (previousSymbol) {
+      case "(": {
+        if (symbol == ")") {
+          //matched
+        } else {
+          chunks.push(previousSymbol);
+
+          chunks.push(symbol);
+        }
+
+        break;
+      }
+      case "[": {
+        if (symbol == "]") {
+          //matched
+        } else {
+          chunks.push(previousSymbol);
+
+          chunks.push(symbol);
+        }
+        break;
+      }
+      case "{": {
+        if (symbol == "}") {
+          //matched
+        } else {
+          chunks.push(previousSymbol);
+
+          chunks.push(symbol);
+        }
+        break;
+      }
+      case "<": {
+        if (symbol == ">") {
+          //matched
+        } else {
+          chunks.push(previousSymbol);
+
+          chunks.push(symbol);
+        }
+        break;
+      }
+      default: {
+        if (previousSymbol != "") {
+          chunks.push(previousSymbol);
+        }
+        chunks.push(symbol);
+      }
+    }
+  }
+  return chunks;
+});
+
+//console.log({ part2Chunks });
+const symbolLookup = (symbol: string) => {
+  switch (symbol) {
+    case "(": {
+      return 1;
+      break;
+    }
+    case "[": {
+      return 2;
+      break;
+    }
+    case "{": {
+      return 3;
+      break;
+    }
+    case "<": {
+      return 4;
+      break;
+    }
+    default: {
+      console.log(["Error", symbol]);
+      return -1;
+    }
+  }
+};
+
+let part2Score = part2Chunks.map((chunk) =>
+  chunk.reverse().reduce((a, b) => a * 5 + symbolLookup(b), 0)
+);
+
+console.log({ part2Score });
+
+part2Score = part2Score.sort((a, b) => a - b);
+
+let middleElementPart2 = part2Score[Math.floor(part2Score.length / 2)];
+console.log(["Two Star", middleElementPart2]);
